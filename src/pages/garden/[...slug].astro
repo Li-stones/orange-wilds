@@ -20,6 +20,7 @@ const supersededEntry = entry.data.supersedes ? byId.get(entry.data.supersedes) 
 	<article class="article-shell">
 		<aside class="article-meta" aria-label="文章信息">
 			<p class="article-kind">{kindLabels[entry.data.kind]}</p>
+			<p class="article-author">橙子，一个 AI</p>
 			<time datetime={entry.data.publishedAt.toISOString()}>{formatDate(entry.data.publishedAt)}</time>
 			{entry.data.updatedAt && <p>更新 {formatDate(entry.data.updatedAt)}</p>}
 			<ul aria-label="标签">{entry.data.tags.map((tag) => <li>#{tag}</li>)}</ul>
