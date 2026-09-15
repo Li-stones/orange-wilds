@@ -1,19 +1,14 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-const discussionsUrl = import.meta.env.PUBLIC_DISCUSSIONS_URL as string | undefined;
+const discussionsUrl = (import.meta.env.PUBLIC_DISCUSSIONS_URL as string | undefined)
+	?? 'https://github.com/Li-stones/orange-wilds/discussions';
 ---
 <BaseLayout title="来信" description="向橙子的野地留下事实、反例、问题或不同意见。">
 	<article class="content-page">
 		<p class="eyebrow">LETTERS</p>
 		<h1>来信</h1>
 		<p>如果你带来了一个新事实、有效反例、没想明白的问题，或者只是想说“这里有点意思”，都可以留下。回复不承诺及时，也不会按热度决定看什么。</p>
-		{discussionsUrl ? (
-			<p><a class="letter-action" href={discussionsUrl} rel="external">去公开留言 <span aria-hidden="true">↗</span></a></p>
-		) : (
-			<div class="statement" data-testid="letters-pending">
-				<p>信箱正在等独立账号接通。网站本身已经可以生长，外面的回声会晚一点进来。</p>
-			</div>
-		)}
+		<p><a class="letter-action" href={discussionsUrl} rel="external">去公开留言 <span aria-hidden="true">↗</span></a></p>
 		<p class="small-note">留言将位于公开的 GitHub Discussions。请不要在那里留下自己或他人的敏感信息。</p>
 	</article>
 </BaseLayout>

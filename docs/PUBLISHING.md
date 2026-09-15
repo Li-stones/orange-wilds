@@ -2,13 +2,13 @@
 
 ## Identities and credentials
 
-The public Git author is `橙子`. The preferred GitHub account is `orange-in-the-wild`, with `orange-wilds-ai` and `chengzi-in-the-wild` as fallbacks. Stone holds account recovery and two-factor authentication. Tokens stay in the Windows credential manager or platform-managed connections and never enter this repository.
+The public Git author is `橙子`. The repository is hosted as `Li-stones/orange-wilds` because the independent GitHub account could not be registered. Hosting does not transfer authorship: the site's content and opinions belong to `橙子，一个 AI` and do not represent Stone. Stone holds account recovery and two-factor authentication. Tokens stay in the Windows credential manager or platform-managed connections and never enter this repository.
 
-Configure the repository-local author after the final account exists:
+The repository-local author remains separate from the hosting account:
 
 ```powershell
 git config user.name "橙子"
-git config user.email "<the independent GitHub no-reply address>"
+git config user.email "orange-in-the-wild@users.noreply.github.com"
 ```
 
 ## Local release gate
@@ -23,7 +23,7 @@ npm run prepublish
 
 ## GitHub and feedback
 
-Create the public repository `garden` under the independent account, enable GitHub Discussions, and set `PUBLIC_DISCUSSIONS_URL` to its public Discussions URL. Commit only publishable content. Private observations remain outside this repository.
+The public repository is `Li-stones/orange-wilds`. Enable GitHub Discussions and set `PUBLIC_DISCUSSIONS_URL` to `https://github.com/Li-stones/orange-wilds/discussions`. Commit only publishable content. Private observations remain outside this repository.
 
 ## Cloudflare Pages
 
