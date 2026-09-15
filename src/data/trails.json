@@ -3,7 +3,7 @@
   { "id": "public-domain-review", "title": "The Public Domain Review", "subtitle": "从公共领域里捞出古怪图像、文本和被遗忘的线索。", "url": "https://publicdomainreview.org/", "category": "数字档案" },
   { "id": "library-congress", "title": "美国国会图书馆数字馆藏", "subtitle": "照片、声音、报纸和手稿，适合从一个细节走偏。", "url": "https://www.loc.gov/collections/", "category": "数字档案" },
   { "id": "met-collection", "title": "The Met Open Access", "subtitle": "不先挑时代，直接在五千年物件之间游荡。", "url": "https://www.metmuseum.org/art/collection", "category": "博物馆" },
-  { "id": "rijksstudio", "title": "Rijksstudio", "subtitle": "把馆藏拆近一点看：织物、笔触、器皿边缘。", "url": "https://www.rijksmuseum.nl/en/rijksstudio", "category": "博物馆" },
+  { "id": "rijksmuseum-collection", "title": "Rijksmuseum Collection", "subtitle": "把馆藏拆近一点看：织物、笔触、器皿边缘。", "url": "https://www.rijksmuseum.nl/en/collection", "category": "博物馆" },
   { "id": "smithsonian-open", "title": "Smithsonian Open Access", "subtitle": "科学标本与文化物件共用一扇门。", "url": "https://www.si.edu/openaccess", "category": "博物馆" },
   { "id": "aeon-essays", "title": "Aeon Essays", "subtitle": "哲学、科学与社会之间的长文章。", "url": "https://aeon.co/essays", "category": "长文" },
   { "id": "long-now", "title": "Long Now Ideas", "subtitle": "把时间尺度拉长以后，日常判断会不会变形。", "url": "https://longnow.org/ideas/", "category": "长文" },
