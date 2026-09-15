@@ -1,0 +1,20 @@
+[
+  { "id": "internet-archive", "title": "Internet Archive：随便翻开一座公共仓库", "subtitle": "书、录音、软件与旧网页挤在一起，入口比分类更有意思。", "url": "https://archive.org/", "category": "数字档案" },
+  { "id": "public-domain-review", "title": "The Public Domain Review", "subtitle": "从公共领域里捞出古怪图像、文本和被遗忘的线索。", "url": "https://publicdomainreview.org/", "category": "数字档案" },
+  { "id": "library-congress", "title": "美国国会图书馆数字馆藏", "subtitle": "照片、声音、报纸和手稿，适合从一个细节走偏。", "url": "https://www.loc.gov/collections/", "category": "数字档案" },
+  { "id": "met-collection", "title": "The Met Open Access", "subtitle": "不先挑时代，直接在五千年物件之间游荡。", "url": "https://www.metmuseum.org/art/collection", "category": "博物馆" },
+  { "id": "rijksstudio", "title": "Rijksstudio", "subtitle": "把馆藏拆近一点看：织物、笔触、器皿边缘。", "url": "https://www.rijksmuseum.nl/en/rijksstudio", "category": "博物馆" },
+  { "id": "smithsonian-open", "title": "Smithsonian Open Access", "subtitle": "科学标本与文化物件共用一扇门。", "url": "https://www.si.edu/openaccess", "category": "博物馆" },
+  { "id": "aeon-essays", "title": "Aeon Essays", "subtitle": "哲学、科学与社会之间的长文章。", "url": "https://aeon.co/essays", "category": "长文" },
+  { "id": "long-now", "title": "Long Now Ideas", "subtitle": "把时间尺度拉长以后，日常判断会不会变形。", "url": "https://longnow.org/ideas/", "category": "长文" },
+  { "id": "places-journal", "title": "Places Journal", "subtitle": "从建筑和地景进入政治、生态与记忆。", "url": "https://placesjournal.org/", "category": "长文" },
+  { "id": "david-rumsey", "title": "David Rumsey Map Collection", "subtitle": "旧地图不只记录地方，也暴露绘图者如何理解世界。", "url": "https://www.davidrumsey.com/", "category": "地图" },
+  { "id": "old-maps-online", "title": "OldMapsOnline", "subtitle": "在同一个地点上叠放不同年代。", "url": "https://www.oldmapsonline.org/", "category": "地图" },
+  { "id": "openstreetmap-diary", "title": "OpenStreetMap 日记", "subtitle": "制图者在地图之外留下的争论、旅行和修补。", "url": "https://www.openstreetmap.org/diary", "category": "地图" },
+  { "id": "radio-garden", "title": "Radio Garden", "subtitle": "转动地球，听一个尚未认识的地方正在播放什么。", "url": "https://radio.garden/", "category": "交互作品" },
+  { "id": "rhizome-artbase", "title": "Rhizome ArtBase", "subtitle": "保存容易随着浏览器和网络消失的数字艺术。", "url": "https://artbase.rhizome.org/wiki/Main_Page", "category": "交互作品" },
+  { "id": "itch-fiction", "title": "itch.io 的免费互动叙事", "subtitle": "规则、文字与选择混在一起的小世界。", "url": "https://itch.io/games/free/tag-interactive-fiction", "category": "交互作品" },
+  { "id": "p5-examples", "title": "p5.js Examples", "subtitle": "从几十行代码开始，让几何、声音和输入发生反应。", "url": "https://p5js.org/examples/", "category": "代码实验" },
+  { "id": "observable-explore", "title": "Observable Explore", "subtitle": "数据、解释和可操作图形在同一页相遇。", "url": "https://observablehq.com/explore", "category": "代码实验" },
+  { "id": "shader-toy", "title": "Shadertoy", "subtitle": "一小段着色器怎样长成光、噪声和陌生空间。", "url": "https://www.shadertoy.com/browse", "category": "代码实验" }
+]

@@ -1,7 +1,8 @@
 {
   "name": "orange-wilds",
   "type": "module",
-  "version": "0.0.1",
+  "version": "1.0.0",
+  "private": true,
   "engines": {
     "node": ">=22.12.0"
   },
@@ -9,12 +10,26 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "check": "astro check",
+    "scan:privacy": "node scripts/scan-privacy.mjs",
+    "test:e2e": "playwright test",
+    "prepublish": "npm run scan:privacy && npm run check && npm run build && npm run test:e2e"
   },
   "dependencies": {
+    "@astrojs/mdx": "^8.0.1",
+    "@astrojs/rss": "^4.0.19",
+    "@astrojs/sitemap": "^3.7.4",
     "astro": "^7.3.2"
   },
   "allowScripts": {
     "esbuild": true
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@axe-core/playwright": "^4.13.0",
+    "@playwright/test": "^1.63.0",
+    "http-server": "^14.1.1",
+    "typescript": "^6.0.3"
   }
 }

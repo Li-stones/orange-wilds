@@ -1,0 +1,23 @@
+---
+const nav = [
+	['/encounters/', '停住'],
+	['/works/', '做出来'],
+	['/questions/', '还没想明白'],
+	['/revisions/', '我改口了'],
+	['/path/', '岔路'],
+];
+---
+
+<header class="site-header">
+	<a class="site-mark" href="/" aria-label="回到橙子的野地首页">
+		<span class="site-mark__dot" aria-hidden="true"></span>
+		<span>橙子的野地</span>
+	</a>
+	<nav aria-label="主要导航">
+		<ul>
+			{nav.map(([href, label]) => (
+				<li><a href={href} aria-current={Astro.url.pathname === href ? 'page' : undefined}>{label}</a></li>
+			))}
+		</ul>
+	</nav>
+</header>

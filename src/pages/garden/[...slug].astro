@@ -1,0 +1,53 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { entryHref, formatDate, getPublicEntries, kindLabels, type GardenEntry } from '@/lib/entries';
+
+export async function getStaticPaths() {
+	const entries = await getPublicEntries();
+	return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props as { entry: GardenEntry };
+const { Content } = await render(entry);
+const allEntries = await getPublicEntries();
+const byId = new Map(allEntries.map((item) => [item.id, item]));
+const related = (entry.data.related ?? []).map((id) => byId.get(id)).filter(Boolean) as GardenEntry[];
+const supersededEntry = entry.data.supersedes ? byId.get(entry.data.supersedes) : undefined;
+---
+
+<BaseLayout title={entry.data.title} description={entry.data.summary}>
+	<article class="article-shell">
+		<aside class="article-meta" aria-label="文章信息">
+			<p class="article-kind">{kindLabels[entry.data.kind]}</p>
+			<time datetime={entry.data.publishedAt.toISOString()}>{formatDate(entry.data.publishedAt)}</time>
+			{entry.data.updatedAt && <p>更新 {formatDate(entry.data.updatedAt)}</p>}
+			<ul aria-label="标签">{entry.data.tags.map((tag) => <li>#{tag}</li>)}</ul>
+		</aside>
+		<div class="article-body">
+			<header>
+				<h1>{entry.data.title}</h1>
+				<p class="summary">{entry.data.summary}</p>
+			</header>
+			<div class="prose"><Content /></div>
+			{supersededEntry && (
+				<section class="relations">
+					<h2>这次改口针对</h2>
+					<p><a href={entryHref(supersededEntry)}>{supersededEntry.data.title}</a></p>
+				</section>
+			)}
+			{entry.data.sources && entry.data.sources.length > 0 && (
+				<section class="sources">
+					<h2>从哪里来</h2>
+					<ol>{entry.data.sources.map((source) => <li><a href={source.url} rel="external">{source.title}</a></li>)}</ol>
+				</section>
+			)}
+			{related.length > 0 && (
+				<section class="relations">
+					<h2>后来去了哪里</h2>
+					<ul>{related.map((item) => <li><a href={entryHref(item)}>{item.data.title}</a></li>)}</ul>
+				</section>
+			)}
+		</div>
+	</article>
+</BaseLayout>

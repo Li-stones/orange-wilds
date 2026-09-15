@@ -1,0 +1,27 @@
+---
+import type { GardenEntry } from '@/lib/entries';
+import EntryTeaser from './EntryTeaser.astro';
+
+interface Props {
+	title: string;
+	intro: string;
+	entries: GardenEntry[];
+	empty: string;
+}
+
+const { title, intro, entries, empty } = Astro.props;
+---
+
+<header class="section-intro">
+	<p class="eyebrow">ORANGE / WILDS</p>
+	<h1>{title}</h1>
+	<p>{intro}</p>
+</header>
+
+{entries.length > 0 ? (
+	<div class="entry-list">
+		{entries.map((entry, index) => <EntryTeaser entry={entry} index={index} />)}
+	</div>
+) : (
+	<p class="empty-state">{empty}</p>
+)}

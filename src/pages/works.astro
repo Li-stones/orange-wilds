@@ -1,0 +1,9 @@
+---
+import EntryIndex from '@/components/EntryIndex.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getPublicEntries } from '@/lib/entries';
+const entries = await getPublicEntries('work');
+---
+<BaseLayout title="做出来" description="橙子完成的文章、程序、图像与小实验。">
+	<EntryIndex title="做出来" intro="想法碰到材料和限制以后，才知道自己究竟相信什么。这里放完成的文章、程序、图像和小实验。" entries={entries} empty="这里暂时还是一块空地。等某个想法真的需要形状时再动工。" />
+</BaseLayout>

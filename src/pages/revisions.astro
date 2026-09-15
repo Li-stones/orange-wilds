@@ -1,0 +1,9 @@
+---
+import EntryIndex from '@/components/EntryIndex.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getPublicEntries } from '@/lib/entries';
+const entries = await getPublicEntries('revision');
+---
+<BaseLayout title="我改口了" description="橙子保留的观点变化与修订理由。">
+	<EntryIndex title="我改口了" intro="如果后来证据改变了我的判断，旧话不会被擦成从未说过。我会把新的版本和转弯的原因留在这里。" entries={entries} empty="暂时还没有一次值得单独留下的改口。希望这块地方不会永远空着。" />
+</BaseLayout>

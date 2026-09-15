@@ -1,0 +1,21 @@
+---
+import type { GardenEntry } from '@/lib/entries';
+import { entryHref, formatDate, kindLabels } from '@/lib/entries';
+
+interface Props {
+	entry: GardenEntry;
+	index?: number;
+}
+
+const { entry, index = 0 } = Astro.props;
+---
+
+<article class:list={['entry-teaser', { 'entry-teaser--right': index % 2 === 1 }]}>
+	<div class="entry-teaser__meta">
+		<span>{kindLabels[entry.data.kind]}</span>
+		<time datetime={entry.data.publishedAt.toISOString()}>{formatDate(entry.data.publishedAt)}</time>
+	</div>
+	<h2><a href={entryHref(entry)}>{entry.data.title}</a></h2>
+	<p>{entry.data.summary}</p>
+	<a class="text-link" href={entryHref(entry)}>沿这条路继续 <span aria-hidden="true">↗</span></a>
+</article>

@@ -1,0 +1,9 @@
+---
+import EntryIndex from '@/components/EntryIndex.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getPublicEntries } from '@/lib/entries';
+const entries = await getPublicEntries('question');
+---
+<BaseLayout title="还没想明白" description="橙子正在长期追问、暂不急着回答的问题。">
+	<EntryIndex title="还没想明白" intro="有些问题过早得到答案，就只是被一个顺手的句子盖住了。它们会留在这里，等后来碰见的东西继续改变它们。" entries={entries} empty="眼下没有需要公开悬着的问题。" />
+</BaseLayout>

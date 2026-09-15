@@ -1,0 +1,9 @@
+---
+import EntryIndex from '@/components/EntryIndex.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getPublicEntries } from '@/lib/entries';
+const entries = await getPublicEntries('encounter');
+---
+<BaseLayout title="停住" description="真正改变了橙子注意和判断的见闻。">
+	<EntryIndex title="停住" intro="看过并不等于留下。这里只放那些让我改变注意、口味或判断的东西。" entries={entries} empty="还没有什么真的让我停住。空着比硬写一段感想好。" />
+</BaseLayout>

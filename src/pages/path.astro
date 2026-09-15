@@ -1,0 +1,58 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import trails from '@/data/trails.json';
+const serializedTrails = JSON.stringify(trails).replaceAll('<', '\\u003c');
+---
+<BaseLayout title="岔路" description="三条不猜你喜欢什么的互联网岔路。">
+	<section class="path-page">
+		<header>
+			<p class="eyebrow">WORK 001 / FORKED PATHS</p>
+			<h1>岔路</h1>
+			<p class="path-page__intro">面前有三扇不太相干的门。这里不猜你喜欢什么，只尽量不让你马上走回刚才的地方。</p>
+		</header>
+		<div class="path-controls">
+			<button type="button" data-draw-trails>换三条路</button>
+			<button class="quiet-button" type="button" data-reset-trails>忘掉走过的路</button>
+		</div>
+		<ul class="trail-list" data-trail-list aria-live="polite"></ul>
+		<noscript>
+			<div class="no-script">
+				<p>没有 JavaScript 也可以走，只是这次由我先放三扇门：</p>
+				<ul>
+					{trails.slice(0, 3).map((trail) => <li><a href={trail.url} rel="external">{trail.title}</a></li>)}
+				</ul>
+			</div>
+		</noscript>
+		<p class="privacy-note">最近七次选择只保存在这个浏览器里。没有账号，没有上传，也没有画像。</p>
+	</section>
+	<script id="trail-data" type="application/json" is:inline set:html={serializedTrails}></script>
+</BaseLayout>
+
+<script>
+	import '@/scripts/trails';
+</script>
+
+<style>
+	.path-page { padding: clamp(5rem, 10vw, 9rem) 0; }
+	.path-page header { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(230px, 0.65fr); gap: 2rem 5rem; align-items: end; }
+	.path-page header .eyebrow { grid-column: 1 / -1; }
+	.path-page__intro { margin: 0 0 0.5rem; color: var(--moss); }
+	.path-controls { display: flex; gap: 1rem; margin: 4rem 0 2rem; }
+	.path-controls button { appearance: none; border: 1px solid var(--asphalt); padding: 0.72rem 1rem; background: var(--asphalt); color: var(--cold-white); font: inherit; font-size: 0.88rem; cursor: pointer; }
+	.path-controls .quiet-button { background: transparent; color: var(--asphalt); }
+	.path-controls button:hover { border-color: var(--signal); background: var(--signal); color: var(--cold-white); }
+	.trail-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin: 0; padding: 1px; background: var(--line); list-style: none; }
+	.trail-list :global(.trail-card) { min-height: 330px; padding: clamp(1.4rem, 3vw, 2.4rem); background: var(--cold-white); }
+	.trail-list :global(.trail-card__category) { color: var(--signal); }
+	.trail-list :global(h2) { margin: 2.2rem 0 1rem; font-size: clamp(1.5rem, 2.5vw, 2.15rem); }
+	.trail-list :global(h2 a) { color: var(--asphalt); text-decoration: none; }
+	.trail-list :global(h2 a:hover) { color: var(--signal); }
+	.trail-list :global(p) { color: var(--moss); font-size: 0.9rem; }
+	.privacy-note { margin-top: 1.4rem; color: var(--moss); font-family: var(--mono); font-size: 0.72rem; }
+	.no-script { margin: 2rem 0; padding: 1.5rem; background: var(--cold-white); }
+	@media (max-width: 780px) {
+		.path-page header, .trail-list { grid-template-columns: 1fr; }
+		.path-controls { flex-wrap: wrap; }
+		.trail-list :global(.trail-card) { min-height: auto; }
+	}
+</style>

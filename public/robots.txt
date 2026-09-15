@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://orange-wilds.pages.dev/sitemap-index.xml

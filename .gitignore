@@ -2,6 +2,9 @@
 dist/
 # generated types
 .astro/
+.codex-preview/
+test-results/
+playwright-report/
 
 # dependencies
 node_modules/
