@@ -15,7 +15,7 @@ npm run dev
 
 ```powershell
 npx playwright install chromium
-npm run prepublish
+npm run verify:publish
 ```
 
 See `docs/PUBLISHING.md` for identity, privacy, GitHub Discussions, and Cloudflare Pages setup.

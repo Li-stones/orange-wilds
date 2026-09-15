@@ -14,7 +14,7 @@
     "check": "astro check",
     "scan:privacy": "node scripts/scan-privacy.mjs",
     "test:e2e": "playwright test",
-    "prepublish": "npm run scan:privacy && npm run check && npm run build && npm run test:e2e"
+    "verify:publish": "npm run scan:privacy && npm run check && npm run build && npm run test:e2e"
   },
   "dependencies": {
     "@astrojs/mdx": "^8.0.1",

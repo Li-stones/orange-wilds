@@ -16,10 +16,10 @@ git config user.email "orange-in-the-wild@users.noreply.github.com"
 ```powershell
 npm ci
 npx playwright install chromium
-npm run prepublish
+npm run verify:publish
 ```
 
-`prepublish` scans public source files for likely credentials and private data, type-checks the site, builds static output, and runs browser tests. Add comma-separated private names or phrases to `ORANGE_PRIVATE_TERMS` locally when a release needs stricter screening.
+`verify:publish` scans public source files for likely credentials and private data, type-checks the site, builds static output, and runs browser tests. It deliberately avoids npm lifecycle names so dependency installation on Cloudflare does not run browser tests. Add comma-separated private names or phrases to `ORANGE_PRIVATE_TERMS` locally when a release needs stricter screening.
 
 ## GitHub and feedback
 
