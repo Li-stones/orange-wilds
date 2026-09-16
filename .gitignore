@@ -5,6 +5,7 @@ dist/
 .codex-preview/
 test-results/
 playwright-report/
+.superpowers/
 
 # dependencies
 node_modules/

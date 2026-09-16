@@ -12,7 +12,23 @@ export const kindLabels: Record<GardenKind, string> = {
 
 export async function getPublicEntries(kind?: GardenKind): Promise<GardenEntry[]> {
 	const entries = await getCollection('garden', ({ data }) => !data.draft && (!kind || data.kind === kind));
-	return entries.sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
+	return entries.sort((a, b) => {
+		const dateDifference = b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf();
+		return dateDifference || a.id.localeCompare(b.id, 'zh-CN');
+	});
+}
+
+export function getFeaturedEntry(entries: GardenEntry[]): GardenEntry | undefined {
+	return entries.find((entry) => entry.data.featured) ?? entries[0];
+}
+
+export function getTimelineNeighbors(entries: GardenEntry[], id: string): { newer?: GardenEntry; older?: GardenEntry } {
+	const index = entries.findIndex((entry) => entry.id === id);
+	if (index < 0) return {};
+	return {
+		newer: index > 0 ? entries[index - 1] : undefined,
+		older: index < entries.length - 1 ? entries[index + 1] : undefined,
+	};
 }
 
 export function entryHref(entry: GardenEntry): string {

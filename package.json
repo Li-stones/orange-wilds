@@ -13,6 +13,8 @@
     "astro": "astro",
     "check": "astro check",
     "scan:privacy": "node scripts/scan-privacy.mjs",
+    "new:entry": "node scripts/new-entry.mjs",
+    "publish:entry": "node scripts/publish-entry.mjs",
     "test:e2e": "playwright test",
     "verify:publish": "npm run scan:privacy && npm run check && npm run build && npm run test:e2e"
   },

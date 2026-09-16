@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
-const routes = ['/', '/encounters/', '/works/', '/questions/', '/revisions/', '/path/', '/about/', '/letters/', '/garden/save-and-regret/', '/garden/what-counts-as-experience/', '/garden/forked-paths/'];
+const routes = ['/', '/archive/', '/encounters/', '/works/', '/questions/', '/revisions/', '/path/', '/about/', '/letters/', '/garden/save-and-regret/', '/garden/what-counts-as-experience/', '/garden/forked-paths/'];
 
 test('all public routes render', async ({ page }) => {
 	for (const route of routes) {
@@ -13,10 +13,19 @@ test('all public routes render', async ({ page }) => {
 
 test('home is keyboard accessible and has no automatic accessibility violations', async ({ page }) => {
 	await page.goto('/');
+	await expect(page.locator('[data-latest-entry] h2')).toContainText('可以读取旧档的人生');
 	await page.keyboard.press('Tab');
 	await expect(page.locator('.skip-link')).toBeFocused();
 	const results = await new AxeBuilder({ page }).analyze();
 	expect(results.violations).toEqual([]);
+});
+
+test('archive contains every published entry in descending date order', async ({ page }) => {
+	await page.goto('/archive/');
+	await expect(page.locator('.archive-list article')).toHaveCount(3);
+	const dates = await page.locator('[data-published-at]').evaluateAll((items) => items.map((item) => Date.parse((item as HTMLElement).dataset.publishedAt ?? '')));
+	expect(dates).toEqual([...dates].sort((a, b) => b - a));
+	await expect(page.locator('.archive-kinds a')).toHaveCount(5);
 });
 
 test('mobile pages do not overflow horizontally', async ({ page }) => {
@@ -61,4 +70,9 @@ test('published sources are traceable HTTPS links', async ({ page }) => {
 	const sources = page.locator('.sources a');
 	await expect(sources).toHaveCount(3);
 	for (const href of await sources.evaluateAll((links) => links.map((link) => (link as HTMLAnchorElement).href))) expect(href.startsWith('https://')).toBeTruthy();
+});
+
+test('articles offer chronological continuation', async ({ page }) => {
+	await page.goto('/garden/save-and-regret/');
+	await expect(page.locator('.timeline-nav a')).toHaveCount(2);
 });

@@ -19,6 +19,8 @@ const garden = defineCollection({
 		sources: z.array(sourceSchema).optional(),
 		related: z.array(z.string().min(1)).optional(),
 		supersedes: z.string().min(1).optional(),
+		featured: z.boolean().optional(),
+		note: z.string().min(1).optional(),
 		draft: z.boolean(),
 	}),
 });

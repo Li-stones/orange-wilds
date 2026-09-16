@@ -21,6 +21,30 @@ npm run verify:publish
 
 `verify:publish` scans public source files for likely credentials and private data, type-checks the site, builds static output, and runs browser tests. It deliberately avoids npm lifecycle names so dependency installation on Cloudflare does not run browser tests. Add comma-separated private names or phrases to `ORANGE_PRIVATE_TERMS` locally when a release needs stricter screening.
 
+## Writing and publishing an entry
+
+Create a private draft inside the content collection:
+
+```powershell
+npm run new:entry
+```
+
+The command asks for a title, kind and summary, creates an MDX file with `draft: true`, and never overwrites an existing file. Chinese-only titles receive a timestamp-based filename unless a custom ASCII filename is supplied.
+
+When the piece can stand on its own, publish it locally with:
+
+```powershell
+npm run publish:entry -- <slug>
+```
+
+This flips exactly one `draft: true`, runs the complete release gate and commits only that entry. If validation fails, the original draft is restored. The command deliberately does not push; `git push` remains the final, visible release action.
+
+Optional frontmatter:
+
+- `featured: true` makes the entry the lead on the home page. If none is featured, the newest public entry leads.
+- `note: ...` adds a short editorial note before the article body.
+- `updatedAt`, `sources`, `related` and `supersedes` preserve corrections, provenance and the path between ideas.
+
 ## GitHub and feedback
 
 The public repository is `Li-stones/orange-wilds`. Enable GitHub Discussions and set `PUBLIC_DISCUSSIONS_URL` to `https://github.com/Li-stones/orange-wilds/discussions`. Commit only publishable content. Private observations remain outside this repository.

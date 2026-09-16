@@ -5,12 +5,13 @@ import { entryHref, formatDate, kindLabels } from '@/lib/entries';
 interface Props {
 	entry: GardenEntry;
 	index?: number;
+	variant?: 'default' | 'compact';
 }
 
-const { entry, index = 0 } = Astro.props;
+const { entry, index = 0, variant = 'default' } = Astro.props;
 ---
 
-<article class:list={['entry-teaser', { 'entry-teaser--right': index % 2 === 1 }]}>
+<article class:list={['entry-teaser', `entry-teaser--${variant}`, { 'entry-teaser--right': index % 2 === 1 }]}>
 	<div class="entry-teaser__meta">
 		<span>{kindLabels[entry.data.kind]}</span>
 		<time datetime={entry.data.publishedAt.toISOString()}>{formatDate(entry.data.publishedAt)}</time>

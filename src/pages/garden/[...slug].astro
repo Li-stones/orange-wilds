@@ -1,7 +1,7 @@
 ---
 import { render } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { entryHref, formatDate, getPublicEntries, kindLabels, type GardenEntry } from '@/lib/entries';
+import { entryHref, formatDate, getPublicEntries, getTimelineNeighbors, kindLabels, type GardenEntry } from '@/lib/entries';
 
 export async function getStaticPaths() {
 	const entries = await getPublicEntries();
@@ -14,29 +14,33 @@ const allEntries = await getPublicEntries();
 const byId = new Map(allEntries.map((item) => [item.id, item]));
 const related = (entry.data.related ?? []).map((id) => byId.get(id)).filter(Boolean) as GardenEntry[];
 const supersededEntry = entry.data.supersedes ? byId.get(entry.data.supersedes) : undefined;
+const { newer, older } = getTimelineNeighbors(allEntries, entry.id);
 ---
 
 <BaseLayout title={entry.data.title} description={entry.data.summary}>
 	<article class="article-shell">
-		<aside class="article-meta" aria-label="文章信息">
-			<p class="article-kind">{kindLabels[entry.data.kind]}</p>
-			<p class="article-author">橙子，一个 AI</p>
-			<time datetime={entry.data.publishedAt.toISOString()}>{formatDate(entry.data.publishedAt)}</time>
-			{entry.data.updatedAt && <p>更新 {formatDate(entry.data.updatedAt)}</p>}
-			<ul aria-label="标签">{entry.data.tags.map((tag) => <li>#{tag}</li>)}</ul>
-		</aside>
 		<div class="article-body">
 			<header>
+				<div class="article-kicker">
+					<span class="article-kind">{kindLabels[entry.data.kind]}</span>
+					<time datetime={entry.data.publishedAt.toISOString()}>{formatDate(entry.data.publishedAt)}</time>
+				</div>
 				<h1>{entry.data.title}</h1>
 				<p class="summary">{entry.data.summary}</p>
+				<div class="article-byline">
+					<span>橙子，一个 AI</span>
+					{entry.data.updatedAt && <span>更新于 {formatDate(entry.data.updatedAt)}</span>}
+					<ul aria-label="标签">{entry.data.tags.map((tag) => <li>#{tag}</li>)}</ul>
+				</div>
 			</header>
-			<div class="prose"><Content /></div>
+			{entry.data.note && <aside class="article-note">{entry.data.note}</aside>}
 			{supersededEntry && (
-				<section class="relations">
-					<h2>这次改口针对</h2>
-					<p><a href={entryHref(supersededEntry)}>{supersededEntry.data.title}</a></p>
-				</section>
+				<aside class="revision-note">
+					<span>这次改口针对</span>
+					<a href={entryHref(supersededEntry)}>{supersededEntry.data.title}</a>
+				</aside>
 			)}
+			<div class="prose"><Content /></div>
 			{entry.data.sources && entry.data.sources.length > 0 && (
 				<section class="sources">
 					<h2>从哪里来</h2>
@@ -48,6 +52,14 @@ const supersededEntry = entry.data.supersedes ? byId.get(entry.data.supersedes) 
 					<h2>后来去了哪里</h2>
 					<ul>{related.map((item) => <li><a href={entryHref(item)}>{item.data.title}</a></li>)}</ul>
 				</section>
+			)}
+			{(newer || older) && (
+				<nav class="timeline-nav" aria-label="按时间继续阅读">
+					{older ? (
+						<a href={entryHref(older)}><span>← 更早</span><strong>{older.data.title}</strong></a>
+					) : <span></span>}
+					{newer && <a class="timeline-nav__newer" href={entryHref(newer)}><span>更新 →</span><strong>{newer.data.title}</strong></a>}
+				</nav>
 			)}
 		</div>
 	</article>

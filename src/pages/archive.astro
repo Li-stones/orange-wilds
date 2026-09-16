@@ -1,0 +1,73 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { entryHref, formatDate, getPublicEntries, kindLabels } from '@/lib/entries';
+
+const entries = await getPublicEntries();
+const groups = new Map<string, typeof entries>();
+
+for (const entry of entries) {
+	const key = new Intl.DateTimeFormat('zh-CN', { year: 'numeric', month: 'long' }).format(entry.data.publishedAt);
+	groups.set(key, [...(groups.get(key) ?? []), entry]);
+}
+
+const kinds = [
+	['/encounters/', '停住'],
+	['/works/', '做出来'],
+	['/questions/', '还没想明白'],
+	['/revisions/', '我改口了'],
+];
+---
+
+<BaseLayout title="归档" description="橙子的野地里已经公开留下的全部内容。">
+	<header class="archive-head">
+		<p class="eyebrow">ARCHIVE</p>
+		<h1>所有留下的痕迹</h1>
+		<p>按时间排列，也可以顺着它们的性质离开这里。</p>
+		<nav class="archive-kinds" aria-label="按栏目浏览">
+			<a aria-current="page" href="/archive/">全部</a>
+			{kinds.map(([href, label]) => <a href={href}>{label}</a>)}
+		</nav>
+	</header>
+
+	<div class="archive-list">
+		{Array.from(groups).map(([period, periodEntries]) => (
+			<section class="archive-group" aria-labelledby={`period-${period}`}>
+				<h2 id={`period-${period}`}>{period}</h2>
+				<div>
+					{periodEntries.map((entry) => (
+						<article data-published-at={entry.data.publishedAt.toISOString()}>
+							<time datetime={entry.data.publishedAt.toISOString()}>{formatDate(entry.data.publishedAt)}</time>
+							<h3><a href={entryHref(entry)}>{entry.data.title}</a></h3>
+							<span>{kindLabels[entry.data.kind]}</span>
+						</article>
+					))}
+				</div>
+			</section>
+		))}
+	</div>
+</BaseLayout>
+
+<style>
+	.archive-head { max-width: 850px; padding: clamp(5rem, 10vw, 9rem) 0 3rem; }
+	.archive-head h1 { margin: .15em 0 .28em; }
+	.archive-head > p:last-of-type { color: var(--moss); }
+	.archive-kinds { display: flex; flex-wrap: wrap; gap: .65rem; margin-top: 2rem; }
+	.archive-kinds a { padding: .38rem .8rem; border: 1px solid var(--line); color: var(--asphalt); font-size: .78rem; text-decoration: none; }
+	.archive-kinds a:hover, .archive-kinds a[aria-current='page'] { border-color: var(--signal); color: var(--signal); }
+	.archive-list { border-top: 1px solid var(--line); }
+	.archive-group { display: grid; grid-template-columns: minmax(130px, .5fr) minmax(0, 1.8fr); gap: clamp(2rem, 6vw, 7rem); padding: 3rem 0; border-bottom: 1px solid var(--line); }
+	.archive-group > h2 { color: var(--moss); font-family: var(--mono); font-size: .78rem; letter-spacing: .08em; }
+	.archive-group article { display: grid; grid-template-columns: 125px minmax(0, 1fr) 100px; align-items: baseline; gap: 1.5rem; padding: 1rem 0; border-bottom: 1px dashed var(--line); }
+	.archive-group article:last-child { border-bottom: 0; }
+	.archive-group time, .archive-group span { color: var(--moss); font-family: var(--mono); font-size: .68rem; }
+	.archive-group span { color: var(--signal); text-align: right; }
+	.archive-group h3 { font-size: 1.35rem; }
+	.archive-group h3 a { color: var(--asphalt); text-decoration: none; }
+	@media (max-width: 780px) {
+		.archive-group { grid-template-columns: 1fr; gap: .7rem; }
+		.archive-group article { grid-template-columns: 1fr auto; gap: .3rem 1rem; }
+		.archive-group h3 { grid-column: 1 / -1; grid-row: 1; }
+		.archive-group time { grid-row: 2; }
+		.archive-group span { grid-row: 2; }
+	}
+</style>
