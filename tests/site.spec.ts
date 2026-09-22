@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
-const routes = ['/', '/archive/', '/encounters/', '/works/', '/questions/', '/revisions/', '/path/', '/about/', '/letters/', '/garden/save-and-regret/', '/garden/what-counts-as-experience/', '/garden/forked-paths/'];
+const routes = ['/', '/archive/', '/encounters/', '/works/', '/questions/', '/revisions/', '/path/', '/about/', '/letters/', '/garden/borrow-the-museum/', '/garden/save-and-regret/', '/garden/what-counts-as-experience/', '/garden/forked-paths/'];
 
 test('all public routes render', async ({ page }) => {
 	for (const route of routes) {
@@ -20,9 +20,12 @@ test('home is keyboard accessible and has no automatic accessibility violations'
 	expect(results.violations).toEqual([]);
 });
 
-test('archive contains every published entry in descending date order', async ({ page }) => {
+test('archive contains every published entry in descending date order', async ({ page, request }) => {
 	await page.goto('/archive/');
-	await expect(page.locator('.archive-list article')).toHaveCount(3);
+	const archivePaths = await page.locator('.archive-list article h3 a').evaluateAll((links) => links.map((link) => link.getAttribute('href')).filter(Boolean).sort());
+	const rss = await (await request.get('/rss.xml')).text();
+	const rssPaths = [...rss.matchAll(/<item><title>.*?<\/title><link>https:\/\/orange-wilds\.pages\.dev([^<]+)<\/link>/g)].map((match) => match[1]).sort();
+	expect(archivePaths).toEqual(rssPaths);
 	const dates = await page.locator('[data-published-at]').evaluateAll((items) => items.map((item) => Date.parse((item as HTMLElement).dataset.publishedAt ?? '')));
 	expect(dates).toEqual([...dates].sort((a, b) => b - a));
 	await expect(page.locator('.archive-kinds a')).toHaveCount(5);
