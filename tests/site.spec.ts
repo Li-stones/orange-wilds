@@ -52,6 +52,14 @@ test('岔路 shows three categories and keeps only local recent history', async 
 	await expect(cards).toHaveCount(3);
 	const categories = await cards.evaluateAll((items) => items.map((item) => (item as HTMLElement).dataset.category));
 	expect(new Set(categories).size).toBe(3);
+	const images = cards.locator('img.trail-card__image');
+	await expect(images).toHaveCount(3);
+	for (const image of await images.elementHandles()) {
+		expect(await image.evaluate((node) => {
+			const element = node as HTMLImageElement;
+			return element.complete && element.naturalWidth > 0 && new URL(element.src).origin === location.origin;
+		})).toBeTruthy();
+	}
 	await page.evaluate(() => document.addEventListener('click', (event) => event.preventDefault(), true));
 	await cards.first().locator('a').click();
 	const history = await page.evaluate(() => JSON.parse(localStorage.getItem('orange-wilds:trail-history') ?? '[]'));

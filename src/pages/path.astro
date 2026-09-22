@@ -42,7 +42,9 @@ const serializedTrails = JSON.stringify(trails).replaceAll('<', '\\u003c');
 	.path-controls .quiet-button { background: transparent; color: var(--asphalt); }
 	.path-controls button:hover { border-color: var(--signal); background: var(--signal); color: var(--cold-white); }
 	.trail-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin: 0; padding: 1px; background: var(--line); list-style: none; }
-	.trail-list :global(.trail-card) { min-height: 330px; padding: clamp(1.4rem, 3vw, 2.4rem); background: var(--cold-white); }
+	.trail-list :global(.trail-card) { display: flex; flex-direction: column; min-height: 520px; padding: 0; overflow: hidden; background: var(--cold-white); }
+	.trail-list :global(.trail-card__image) { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; background: var(--mist); }
+	.trail-list :global(.trail-card__body) { flex: 1; padding: clamp(1.4rem, 3vw, 2.4rem); }
 	.trail-list :global(.trail-card__category) { color: var(--signal); }
 	.trail-list :global(h2) { margin: 2.2rem 0 1rem; font-size: clamp(1.5rem, 2.5vw, 2.15rem); }
 	.trail-list :global(h2 a) { color: var(--asphalt); text-decoration: none; }

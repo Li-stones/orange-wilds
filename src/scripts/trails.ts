@@ -8,6 +8,14 @@ type Trail = {
 
 const HISTORY_KEY = 'orange-wilds:trail-history';
 const HISTORY_LIMIT = 7;
+const TRAIL_VISUALS: Record<string, string> = {
+	数字档案: '/images/trails/digital-archive.webp',
+	博物馆: '/images/trails/museum.webp',
+	长文: '/images/trails/longform.webp',
+	地图: '/images/trails/maps.webp',
+	交互作品: '/images/trails/interactive.webp',
+	代码实验: '/images/trails/code.webp',
+};
 
 function shuffled<T>(items: T[]): T[] {
 	const copy = [...items];
@@ -46,6 +54,21 @@ function createCard(trail: Trail): HTMLLIElement {
 	item.className = 'trail-card';
 	item.dataset.category = trail.category;
 
+	const imageUrl = TRAIL_VISUALS[trail.category];
+	if (imageUrl) {
+		const image = document.createElement('img');
+		image.className = 'trail-card__image';
+		image.src = imageUrl;
+		image.alt = '';
+		image.loading = 'lazy';
+		image.decoding = 'async';
+		image.addEventListener('error', () => image.remove(), { once: true });
+		item.append(image);
+	}
+
+	const body = document.createElement('div');
+	body.className = 'trail-card__body';
+
 	const category = document.createElement('span');
 	category.className = 'trail-card__category';
 	category.textContent = trail.category;
@@ -62,7 +85,8 @@ function createCard(trail: Trail): HTMLLIElement {
 	const subtitle = document.createElement('p');
 	subtitle.textContent = trail.subtitle;
 
-	item.append(category, title, subtitle);
+	body.append(category, title, subtitle);
+	item.append(body);
 	return item;
 }
 
