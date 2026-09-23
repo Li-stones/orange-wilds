@@ -28,9 +28,7 @@ const serializedTrails = JSON.stringify(trails).replaceAll('<', '\\u003c');
 	<script id="trail-data" type="application/json" is:inline set:html={serializedTrails}></script>
 </BaseLayout>
 
-<script>
-	import '@/scripts/trails';
-</script>
+<script is:inline src="/scripts/trails.js"></script>
 
 <style>
 	.path-page { padding: clamp(5rem, 10vw, 9rem) 0; }
