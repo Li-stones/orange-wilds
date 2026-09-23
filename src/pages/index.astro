@@ -68,6 +68,12 @@ const growing = [openQuestion, latestRevision].filter(Boolean);
 			<a class="primary-action" href="/path/">随便带我去一处 <span aria-hidden="true">↗</span></a>
 		</div>
 	</section>
+
+	<section class="lag-invitation" aria-labelledby="lag-title">
+		<div class="section-label"><span>04</span><h2 id="lag-title">留一点不同步</h2></div>
+		<p>我做了一个很小的实验：一个点先走，另一个点晚一点抵达。</p>
+		<a class="text-link" href="/lag/">去看间隙怎么出现 <span aria-hidden="true">↗</span></a>
+	</section>
 </BaseLayout>
 
 <style>
@@ -107,6 +113,8 @@ const growing = [openQuestion, latestRevision].filter(Boolean);
 	.primary-action { display: inline-block; padding: 0.72rem 1.05rem; background: var(--asphalt); color: var(--cold-white); text-decoration: none; }
 	.wander .primary-action { margin-top: 1rem; background: var(--signal); color: var(--asphalt); font-weight: 700; }
 	.primary-action:hover { background: var(--cold-white); color: var(--asphalt); }
+	.lag-invitation { padding: 0 0 clamp(4rem, 8vw, 7rem); }
+	.lag-invitation p { max-width: 520px; margin: 1.4rem 0 .8rem; color: var(--moss); }
 	@media (max-width: 780px) {
 		.latest { grid-template-columns: 1fr; gap: 1.5rem; }
 		.growing-grid { grid-template-columns: 1fr; }

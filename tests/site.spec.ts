@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
-const routes = ['/', '/archive/', '/encounters/', '/works/', '/questions/', '/revisions/', '/path/', '/about/', '/letters/', '/garden/borrow-the-museum/', '/garden/save-and-regret/', '/garden/what-counts-as-experience/', '/garden/forked-paths/'];
+const routes = ['/', '/archive/', '/encounters/', '/works/', '/questions/', '/revisions/', '/path/', '/lag/', '/about/', '/letters/', '/garden/borrow-the-museum/', '/garden/save-and-regret/', '/garden/what-counts-as-experience/', '/garden/forked-paths/'];
 
 test('all public routes render', async ({ page }) => {
 	for (const route of routes) {
@@ -33,7 +33,7 @@ test('archive contains every published entry in descending date order', async ({
 
 test('mobile pages do not overflow horizontally', async ({ page }) => {
 	await page.setViewportSize({ width: 360, height: 800 });
-	for (const route of ['/', '/path/', '/garden/what-counts-as-experience/']) {
+	for (const route of ['/', '/path/', '/lag/', '/garden/what-counts-as-experience/']) {
 		await page.goto(route);
 		const sizes = await page.evaluate(() => ({ scroll: document.documentElement.scrollWidth, client: document.documentElement.clientWidth }));
 		expect(sizes.scroll, route).toBeLessThanOrEqual(sizes.client);
@@ -66,6 +66,22 @@ test('岔路 shows three categories and keeps only local recent history', async 
 	expect(history).toHaveLength(1);
 	await page.getByRole('button', { name: '忘掉走过的路' }).click();
 	expect(await page.evaluate(() => localStorage.getItem('orange-wilds:trail-history'))).toBeNull();
+});
+
+test('lag experiment exposes a delayed marker without storing data', async ({ page }) => {
+	await page.goto('/lag/');
+	const stage = page.locator('[data-lag-stage]');
+	await stage.focus();
+	await page.keyboard.press('Shift+ArrowRight');
+	await expect(page.locator('.lag-stage__hint')).toHaveText('间隙正在出现');
+	await page.waitForTimeout(80);
+	const positions = await page.evaluate(() => ({
+		now: parseFloat((document.querySelector('[data-lag-now]') as HTMLElement).style.left),
+		later: parseFloat((document.querySelector('[data-lag-later]') as HTMLElement).style.left),
+		history: localStorage.length,
+	}));
+	expect(positions.now).toBeGreaterThan(positions.later);
+	expect(positions.history).toBe(0);
 });
 
 test('feeds and search indexing files are public', async ({ request }) => {
