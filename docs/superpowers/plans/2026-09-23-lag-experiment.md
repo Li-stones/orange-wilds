@@ -4,7 +4,7 @@
 
 **Goal:** Add a small, privacy-preserving interactive page where immediate and delayed motion make change visible through their separation.
 
-**Architecture:** Add a static Astro route at `/lag/` with one inline client script. The script tracks pointer or touch position, moves a foreground dot immediately and a second dot with exponential easing, and exposes the current separation as a visual gap only. No analytics, storage, network requests, or recommendation logic.
+**Architecture:** Add a static Astro route at `/lag/` with a bundled client script. The script tracks pointer or touch position, moves a foreground dot immediately and a second dot with exponential easing, and exposes the current separation as a visual gap only. No analytics, storage, network requests, or recommendation logic; the script stays external so the site's content security policy can permit it.
 
 **Tech Stack:** Astro, TypeScript, CSS, Playwright.
 
