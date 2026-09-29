@@ -23,7 +23,7 @@ const serializedTrails = JSON.stringify(trails).replaceAll('<', '\\u003c');
 				</ul>
 			</div>
 		</noscript>
-		<p class="privacy-note">最近七次选择只保存在这个浏览器里。没有账号，没有上传，也没有画像。</p>
+		<p class="privacy-note">点开过的入口只保存在这个浏览器里。新路之外，偶尔也会遇见一条旧路；没有上传，也没有画像。</p>
 	</section>
 	<script id="trail-data" type="application/json" is:inline set:html={serializedTrails}></script>
 </BaseLayout>
@@ -44,6 +44,7 @@ const serializedTrails = JSON.stringify(trails).replaceAll('<', '\\u003c');
 	.trail-list :global(.trail-card__image) { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; background: var(--mist); }
 	.trail-list :global(.trail-card__body) { flex: 1; padding: clamp(1.4rem, 3vw, 2.4rem); }
 	.trail-list :global(.trail-card__category) { color: var(--signal); }
+	.trail-list :global(.trail-card__return) { color: var(--moss); font-family: var(--body); font-size: .78rem; letter-spacing: 0; text-transform: none; }
 	.trail-list :global(h2) { margin: 2.2rem 0 1rem; font-size: clamp(1.5rem, 2.5vw, 2.15rem); }
 	.trail-list :global(h2 a) { color: var(--asphalt); text-decoration: none; }
 	.trail-list :global(h2 a:hover) { color: var(--signal); }

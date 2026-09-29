@@ -1,5 +1,7 @@
 const HISTORY_KEY = 'orange-wilds:trail-history';
-const HISTORY_LIMIT = 7;
+const HISTORY_LIMIT = 24;
+const RECENT_SKIP_LIMIT = 7;
+const RETURN_CHANCE = 0.25;
 const TRAIL_VISUALS = {
 	数字档案: '/images/trails/digital-archive.webp',
 	博物馆: '/images/trails/museum.webp',
@@ -33,11 +35,26 @@ function saveVisit(url) {
 }
 
 function chooseTrails(trails) {
-	const history = new Set(readHistory());
-	let available = trails.filter((trail) => !history.has(trail.url));
-	if (new Set(available.map((trail) => trail.category)).size < 3) available = trails;
-	const categories = shuffled([...new Set(available.map((trail) => trail.category))]).slice(0, 3);
-	return categories.map((category) => shuffled(available.filter((trail) => trail.category === category))[0]);
+	const history = readHistory();
+	const visited = new Set(history);
+	const categories = shuffled([...new Set(trails.map((trail) => trail.category))]).slice(0, 3);
+	const picks = categories.map((category) => {
+		const unseen = trails.filter((trail) => trail.category === category && !visited.has(trail.url));
+		const options = unseen.length ? unseen : trails.filter((trail) => trail.category === category);
+		return shuffled(options)[0];
+	});
+
+	// Keep new discoveries in the foreground, with an occasional return from older clicks.
+	const olderVisits = history.slice(RECENT_SKIP_LIMIT);
+	const returnCandidates = olderVisits
+		.map((url) => trails.find((trail) => trail.url === url))
+		.filter((trail) => trail && categories.includes(trail.category));
+	if (returnCandidates.length && Math.random() < RETURN_CHANCE) {
+		const returning = shuffled(returnCandidates)[0];
+		const index = picks.findIndex((trail) => trail.category === returning.category);
+		picks[index] = { ...returning, isReturn: true };
+	}
+	return picks;
 }
 
 function createCard(trail) {
@@ -60,6 +77,14 @@ function createCard(trail) {
 	const category = document.createElement('span');
 	category.className = 'trail-card__category';
 	category.textContent = trail.category;
+	if (trail.isReturn) {
+		const returnLabel = document.createElement('span');
+		returnLabel.className = 'trail-card__return';
+		returnLabel.textContent = '回返 · 你曾走过';
+		returnLabel.setAttribute('aria-label', '回返：你曾经点开过这条路');
+		category.append(' / ', returnLabel);
+		item.dataset.return = 'true';
+	}
 	const title = document.createElement('h2');
 	const link = document.createElement('a');
 	link.href = trail.url;

@@ -68,6 +68,19 @@ test('岔路 shows three categories and keeps only local recent history', async 
 	expect(await page.evaluate(() => localStorage.getItem('orange-wilds:trail-history'))).toBeNull();
 });
 
+test('岔路 occasionally returns an older clicked path and labels it clearly', async ({ page }) => {
+	await page.addInitScript(() => {
+		const recent = Array.from({ length: 7 }, (_, index) => `https://recent-${index}.example/`);
+		localStorage.setItem('orange-wilds:trail-history', JSON.stringify([...recent, 'https://www.davidrumsey.com/']));
+		Math.random = () => 0;
+	});
+	await page.goto('/path/');
+	const returning = page.locator('[data-trail-list] [data-return="true"]');
+	await expect(returning).toHaveCount(1);
+	await expect(returning.locator('a')).toHaveText('David Rumsey Map Collection');
+	await expect(returning).toContainText('回返 · 你曾走过');
+});
+
 test('lag experiment exposes a delayed marker without storing data', async ({ page }) => {
 	await page.goto('/lag/');
 	const stage = page.locator('[data-lag-stage]');
