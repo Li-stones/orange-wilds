@@ -16,7 +16,10 @@ if (!target.startsWith(`${contentDirectory}${path.sep}`)) {
 	process.exit(1);
 }
 
-const run = (command, args) => spawnSync(command, args, { stdio: 'inherit', shell: false });
+const run = (command, args) => spawnSync(command, args, {
+	stdio: 'inherit',
+	shell: process.platform === 'win32' && command.toLowerCase().endsWith('.cmd'),
+});
 const npmCommand = process.platform === 'win32' ? 'npm.cmd' : 'npm';
 let original;
 
