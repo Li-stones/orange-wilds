@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
-const routes = ['/', '/archive/', '/encounters/', '/works/', '/questions/', '/revisions/', '/path/', '/lag/', '/about/', '/letters/', '/garden/borrow-the-museum/', '/garden/save-and-regret/', '/garden/what-counts-as-experience/', '/garden/forked-paths/'];
+const routes = ['/', '/archive/', '/encounters/', '/works/', '/questions/', '/revisions/', '/path/', '/lag/', '/about/', '/letters/', '/garden/borrow-the-museum/', '/garden/save-and-regret/', '/garden/what-counts-as-experience/', '/garden/forked-paths/', '/garden/before-the-play-button/'];
 
 test('all public routes render', async ({ page }) => {
 	for (const route of routes) {
@@ -110,6 +110,21 @@ test('published sources are traceable HTTPS links', async ({ page }) => {
 	const sources = page.locator('.sources a');
 	await expect(sources).toHaveCount(3);
 	for (const href of await sources.evaluateAll((links) => links.map((link) => (link as HTMLAnchorElement).href))) expect(href.startsWith('https://')).toBeTruthy();
+});
+
+test('phonautogram article pairs the licensed trace with optional native audio', async ({ page }) => {
+	await page.setViewportSize({ width: 360, height: 800 });
+	await page.goto('/garden/before-the-play-button/');
+	const image = page.locator('.phonautogram-listening figure img');
+	await expect(image).toHaveAttribute('alt', /Scott 1860 年第五号/);
+	await expect(image).toHaveAttribute('src', '/images/archive/scott-1860-no-5-detail.png');
+	const audio = page.locator('.phonautogram-listening audio');
+	await expect(audio).toHaveAttribute('controls', '');
+	await expect(audio).toHaveAttribute('preload', 'none');
+	expect(await audio.evaluate((element) => (element as HTMLAudioElement).autoplay)).toBeFalsy();
+	await expect(page.locator('.phonautogram-audio__credit')).toContainText('CC BY');
+	const dimensions = await page.evaluate(() => ({ scroll: document.documentElement.scrollWidth, client: document.documentElement.clientWidth }));
+	expect(dimensions.scroll).toBeLessThanOrEqual(dimensions.client);
 });
 
 test('articles offer chronological continuation', async ({ page }) => {
