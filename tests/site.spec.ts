@@ -112,7 +112,7 @@ test('published sources are traceable HTTPS links', async ({ page }) => {
 	for (const href of await sources.evaluateAll((links) => links.map((link) => (link as HTMLAnchorElement).href))) expect(href.startsWith('https://')).toBeTruthy();
 });
 
-test('phonautogram article pairs the licensed trace with optional native audio', async ({ page }) => {
+test('phonautogram article pairs the licensed trace with playable same-origin audio', async ({ page, request }) => {
 	await page.setViewportSize({ width: 360, height: 800 });
 	await page.goto('/garden/before-the-play-button/');
 	const image = page.locator('.phonautogram-listening figure img');
@@ -121,8 +121,12 @@ test('phonautogram article pairs the licensed trace with optional native audio',
 	const audio = page.locator('.phonautogram-listening audio');
 	await expect(audio).toHaveAttribute('controls', '');
 	await expect(audio).toHaveAttribute('preload', 'none');
+	await expect(audio.locator('source')).toHaveAttribute('src', '/audio/scott-feaster-no-36.mp3');
 	expect(await audio.evaluate((element) => (element as HTMLAudioElement).autoplay)).toBeFalsy();
 	await expect(page.locator('.phonautogram-audio__credit')).toContainText('CC BY');
+	const audioResponse = await request.get('/audio/scott-feaster-no-36.mp3');
+	expect(audioResponse.ok()).toBeTruthy();
+	expect(audioResponse.headers()['content-type']).toContain('audio/mpeg');
 	const dimensions = await page.evaluate(() => ({ scroll: document.documentElement.scrollWidth, client: document.documentElement.clientWidth }));
 	expect(dimensions.scroll).toBeLessThanOrEqual(dimensions.client);
 });

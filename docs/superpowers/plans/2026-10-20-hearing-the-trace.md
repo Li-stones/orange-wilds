@@ -4,7 +4,7 @@
 
 **Goal:** Publish an accessible garden essay that lets readers compare Scott’s 9 April 1860 phonautogram with First Sounds’ reconstructed audio while making the reconstruction and reuse rights explicit.
 
-**Architecture:** Use one new MDX entry and a small scoped presentation class in the existing global stylesheet. Host the specifically matching trace locally only if the image’s reuse permission is verified; point the native audio player to First Sounds’ CC BY reconstruction with attribution and no preload. Extend the existing Playwright route/accessibility smoke coverage.
+**Architecture:** Use one new MDX entry and a small scoped presentation class in the existing global stylesheet. Host the specifically matching trace locally only if the image’s reuse permission is verified; serve an unchanged local copy of First Sounds’ CC BY reconstruction to avoid cross-origin media failures. Keep native controls with no preload. Extend the existing Playwright route/accessibility smoke coverage.
 
 **Tech Stack:** Astro 7, MDX content collection, CSS, Playwright.
 
@@ -14,6 +14,7 @@
 
 - Create `src/content/garden/before-the-play-button.mdx` for the article, source links, figure, and native audio control.
 - Create `public/images/archive/scott-1860-no-5-detail.png` only from a trace image whose specific reuse permission is confirmed; preserve its pixels and record its source and license in the figure caption and article sources.
+- Create `public/audio/scott-feaster-no-36.mp3` as an unchanged local copy of First Sounds’ CC BY reconstruction and attribute/link the original source.
 - Modify `src/styles/global.css` with only the responsive, two-column media presentation and its mobile stack.
 - Modify `tests/site.spec.ts` to include the new route and verify the image alternative text, native controls, no autoplay/preload, and no horizontal overflow at 360px.
 
